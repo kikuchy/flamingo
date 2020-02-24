@@ -4,6 +4,8 @@ import 'enum/execute_type.dart';
 import 'flamingo.dart';
 import 'type/type.dart';
 
+typedef DocumentBuilder<T> = T Function(String id, DocumentSnapshot snapshot, Map<String, dynamic> value);
+
 class Document<T> extends Base implements DocumentType {
   Document({
     String id,

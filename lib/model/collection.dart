@@ -1,19 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flamingo/document_accessor.dart';
-import 'package:flamingo/type/type.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
+import 'package:flamingo/model/query.dart';
+
 import '../document.dart';
 
-class Collection<T extends Document<DocumentType>> {
-  Collection(Document parent, this.name) {
-    ref = parent.reference.collection(name);
-    path = ref.path;
-  }
-  CollectionReference ref;
-  String path;
-  String name;
+class Collection<T extends Document<T>> extends Query<T> {
+  Collection(T parent, this.name, DocumentBuilder<T> builder)
+      : assert(parent != null),
+        ref = parent.reference.collection(name),
+        super(builder, parent.reference.collection(name));
 
-  Future<void> add(T document) async {
-    final accessor = DocumentAccessor();
-    await accessor.save(document);
-  }
+  final firestore.CollectionReference ref;
+  final String name;
+
+  String get path => ref.path;
 }
